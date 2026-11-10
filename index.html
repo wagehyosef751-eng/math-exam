@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختبار الرياضيات</title>
+
+<style>
+body{
+    font-family:Tahoma;
+    direction:rtl;
+    background:#f4f4f4;
+    padding:20px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px #ccc;
+}
+
+h1{
+    text-align:center;
+    color:#0066cc;
+}
+
+.question{
+    margin:15px 0;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px;
+    width:100%;
+    font-size:18px;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+#result{
+    margin-top:20px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+#answers{
+    margin-top:20px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>امتحان الرياضيات التجريبي</h1>
+
+<input type="text" id="studentName" placeholder="اكتب اسم الطالب" style="width:100%;padding:10px;">
+
+<h3>الوقت المتبقي: <span id="timer">30:00</span></h3>
+
+<div class="question">
+<p>1) 25 + 17 = ؟</p>
+<label><input type="radio" name="q1"> 42</label><br>
+<label><input type="radio" name="q1"> 40</label><br>
+<label><input type="radio" name="q1"> 45</label>
+</div>
+
+<div class="question">
+<p>2) 25 + 50 = ؟</p>
+<label><input type="radio" name="q2"> 80</label><br>
+<label><input type="radio" name="q2"> 57</label><br>
+<label><input type="radio" name="q2"> 75</label>
+</div>
+
+<div class="question">
+<p>3) 50 - 24 = ؟</p>
+<label><input type="radio" name="q3"> 26</label><br>
+<label><input type="radio" name="q3"> 28</label><br>
+<label><input type="radio" name="q3"> 30</label>
+</div>
+
+<div class="question">
+<p>4) 8 × 6 = ؟</p>
+<label><input type="radio" name="q4"> 48</label><br>
+<label><input type="radio" name="q4"> 42</label><br>
+<label><input type="radio" name="q4"> 36</label>
+</div>
+
+<div class="question">
+<p>5) 81 ÷ 9 = ؟</p>
+<label><input type="radio" name="q5"> 9</label><br>
+<label><input type="radio" name="q5"> 7</label><br>
+<label><input type="radio" name="q5"> 8</label>
+</div>
+
+<div class="question">
+<p>6) نصف العدد 90 يساوي؟</p>
+<label><input type="radio" name="q6"> 45</label><br>
+<label><input type="radio" name="q6"> 40</label><br>
+<label><input type="radio" name="q6"> 50</label>
+</div>
+
+<div class="question">
+<p>7) 9 × 10 = 0 =؟</p>
+<label><input type="radio" name="q7"> 90</label><br>
+<label><input type="radio" name="q7"> 40</label><br>
+<label><input type="radio" name="q7"> 50</label>
+</div>
+
+<div class="question">
+<p>8) z + 20 = 10 =؟</p>
+<label><input type="radio" name="q8"> -5</label><br>
+<label><input type="radio" name="q8"> -8</label><br>
+<label><input type="radio" name="q8"> -10</label>
+</div>
+
+<div class="question">
+<p>9) z - 10 = 12 =؟</p>
+<label><input type="radio" name="q9"> 15</label><br>
+<label><input type="radio" name="q9"> 22</label><br>
+<label><input type="radio" name="q9"> -22</label>
+</div>
+
+<div class="question">
+<p>10) z ÷ 10 = 5 =؟</p>
+<label><input type="radio" name="q10"> 40</label><br>
+<label><input type="radio" name="q10"> 50</label><br>
+<label><input type="radio" name="q10"> -50</label>
+</div>
+
+<button onclick="calculate()">إنهاء الامتحان</button>
+
+<div id="result"></div>
+<div id="answers"></div>
+
+</div>
+
+<script>
+
+let minutes = 10;
+let seconds = 0;
+
+const timer = setInterval(() => {
+
+if(seconds === 0){
+    if(minutes === 0){
+        clearInterval(timer);
+        calculate();
+        return;
+    }
+    minutes--;
+    seconds = 59;
+}else{
+    seconds--;
+}
+
+document.getElementById("timer").textContent =
+`${minutes}:${seconds.toString().padStart(2,'0')}`;
+
+},1000);
+
+function calculate(){
+
+const name =
+document.getElementById("studentName").value;
+
+if(name.trim() === ""){
+    alert("اكتب اسم الطالب");
+    return;
+}
+
+let score = 0;
+
+const correct = {
+q1:"42",
+q2:"75",
+q3:"26",
+q4:"48",
+q5:"9",
+q6:"45",
+q7:"90",
+q8:"-10",
+q9:"22",
+q10:"50",
+};
+
+let review = "<h2>تصحيح الإجابات</h2>";
+
+for(let i=1;i<=10;i++){
+
+let selected =
+document.querySelector(
+`input[name="q${i}"]:checked`
+);
+
+let answer =
+selected ?
+selected.parentElement.textContent.trim()
+:
+"لم تتم الإجابة";
+
+let right = correct["q"+i];
+
+if(answer === right){
+score++;
+
+review += `
+<p style="color:green">
+✅ السؤال ${i}: صحيح
+</p>`;
+}
+else{
+
+review += `
+<p style="color:red">
+❌ السؤال ${i}
+<br>
+إجابتك: ${answer}
+<br>
+الإجابة الصحيحة: ${right}
+</p>`;
+}
+}
+
+let percent = (score/10)*100;
+
+let grade;
+
+if(percent >= 85){
+grade = "ممتاز";
+}
+else if(percent >= 75){
+grade = "جيد جداً";
+}
+else if(percent >= 65){
+grade = "جيد";
+}
+else if(percent >= 50){
+grade = "مقبول";
+}
+else{
+grade = "يحتاج إلى تحسين";
+}
+
+document.getElementById("result").innerHTML = `
+اسم الطالب: ${name}<br>
+الدرجة: ${score} من 10<br>
+النسبة: ${percent}%<br>
+التقدير: ${grade}
+`;
+
+document.getElementById("answers").innerHTML = review;
+}
+
+</script>
+
+</body>
+</html>

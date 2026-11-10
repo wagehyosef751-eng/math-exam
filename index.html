@@ -44,8 +44,12 @@ review += `<p style="color:green">✅ السؤال ${i}: صحيح</p>`;}else{
 review += `<p style="color:red">❌ السؤال ${i}<br>إجابتك: ${answer}<br>الإجابة الصحيحة: ${right}</p>`;}}
 let percent = (score/10)*100;
 let grade;
-if(percent >= 85){    grade = "ممتاز";}else if(percent >= 75){    grade = "جيد جداً";}else if(percent >= 65){    grade = "جيد";}else if(percent >= 50){    grade = "مقبول";}else{    grade = "يحتاج إلى تحسين";}
-fetch("https://script.google.com/macros/s/AKfycbyuZ43rM1-QQAHG2tx_1w4OrzcdSaUJx57Ifs_8NsvIa-dye2FZig2z0qCzEIijhtkf/exec", {    method: "POST",    body: JSON.stringify({        student: name,        score: score,        percent: percent,        grade: grade    })}).then(response => response.text()).then(data => console.log(data)).catch(error => console.log(error));
+if(percent >= 85){    grade = "ممتاز";}else if(percent >= 75){    grade = "جيد جداً";}else if(percent >= 65){    grade = "جيد";}else if(percent >= 50)
+{    grade = "مقبول";}else{    grade = "يحتاج إلى تحسين";}
+fetch("https://script.google.com/macros/s/AKfycbyuZ43rM1-QQAHG2tx_1w4OrzcdSaUJx57Ifs_8NsvIa-dye2FZig2z0qCzEIijhtkf/exec",
+      {    method: "POST",    body: JSON.stringify({  
+        student: name,        score: score,        percent: percent,        grade: grade 
+      })}).then(response => response.text()).then(data => console.log(data)).catch(error => console.log(error));
 document.getElementById("result").innerHTML = `اسم الطالب: ${name}<br>الدرجة: ${score} من 10<br>النسبة: ${percent}%<br>التقدير: ${grade}`;
 document.getElementById("answers").innerHTML = review;
 }

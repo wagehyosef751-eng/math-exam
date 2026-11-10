@@ -46,7 +46,7 @@ let percent = (score/10)*100;
 let grade;
 if(percent >= 85){    grade = "ممتاز";}else if(percent >= 75){    grade = "جيد جداً";}else if(percent >= 65){    grade = "جيد";}else if(percent >= 50)
 {    grade = "مقبول";}else{    grade = "يحتاج إلى تحسين";}
-fetch("https://script.google.com/macros/s/AKfycbyuZ43rM1-QQAHG2tx_1w4OrzcdSaUJx57Ifs_8NsvIa-dye2FZig2z0qCzEIijhtkf/exec",
+fetch("ءhttps://script.google.com/macros/s/AKfycbyrNe10LwTZK18Fs-Bysv_WN6BqY-qKIHExh8igPxtbk1EH6IqAJRjb67mxu8CjJd8/exec",
       {    method: "POST",    body: JSON.stringify({  
         student: name,        score: score,        percent: percent,        grade: grade 
       })}).then(response => response.text()).then(data => console.log(data)).catch(error => console.log(error));

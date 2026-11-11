@@ -247,9 +247,25 @@ if(sec<10){
 sec="0"+sec;
 }
 
-document.getElementById("timer").innerHTML=
-"الوقت المتبقي: "+min+":"+sec;
+document.getElementById("result").innerHTML =
 
+`
+✅ تم إرسال الامتحان
+
+<br><br>
+
+الدرجة:
+<b>${score}</b>
+
+من
+
+<b>${questions.length}</b>
+
+<hr>
+
+${review}
+`;
+      
 if(timeLeft<=300){
 
 document.getElementById("timer")
@@ -283,6 +299,7 @@ return;
 }
 
 let score = 0;
+let review = "";
 
 questions.forEach((q,index)=>{
 
@@ -291,11 +308,33 @@ document.querySelector(
 `input[name="q${index}"]:checked`
 );
 
-if(
-selected &&
-selected.value===q.answer
-){
-score++;
+if(selected){
+
+    if(selected.value == q.answer){
+
+        score++;
+
+        review += `
+        <p style="color:green">
+        ✅ ${q.question}
+        <br>
+        إجابتك صحيحة
+        </p>
+        `;
+
+    }else{
+
+        review += `
+        <p style="color:red">
+        ❌ ${q.question}
+        <br>
+        إجابتك: ${selected.value}
+        <br>
+        الإجابة الصحيحة: ${q.answer}
+        </p>
+        `;
+
+    }
 }
 
 });

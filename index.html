@@ -247,10 +247,16 @@ if(sec<10){
 sec="0"+sec;
 }
 
-document.getElementById("result").innerHTML =
+document.getElementById("result")
+.innerHTML=
 
 `
-✅ تم إرسال الامتحان
+✅ تم إرسال الامتحان بنجاح
+
+<br><br>
+
+اسم الطالب:
+<b>${student}</b>
 
 <br><br>
 
@@ -258,7 +264,6 @@ document.getElementById("result").innerHTML =
 <b>${score}</b>
 
 من
-
 <b>${questions.length}</b>
 
 <hr>
@@ -381,8 +386,12 @@ document.getElementById("result")
 
 من
 <b>${questions.length}</b>
-`;
 
+<hr>
+
+${review}
+`;
+      
 }
 
       window.onload = loadExam;

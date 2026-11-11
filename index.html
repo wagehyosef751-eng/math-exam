@@ -121,44 +121,62 @@ placeholder="اكتب اسم الطالب">
 
 <script>
 
-const APP_SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbwKLocTYZXPtGzIXkPVtcu9rru6IOZpeeOxrlRhqY8mujR_wIDsF_ZyPbe4I7OAgUo6Rw/exec";
+const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRJry6lpQybzl8e1KYv4Jf_aOVyxW4AwBHNKJI-_98k0AxWZdGwKRpsu-_05YFNg0YcA/exec";
       
 let timeLeft = 30 * 60;
 
-const questions = [
+let questions = [];
+let timeLeft = 0;
 
-{
-question:"1 + 1 = ؟",
-options:["1","2","3","4"],
-answer:"2"
-},
+async function loadExam(){
 
-{
-question:"2 + 2 = ؟",
-options:["3","4","5","6"],
-answer:"4"
-},
+    const response = await fetch(APP_SCRIPT_URL);
+    const data = await response.json();
 
-{
-question:"3 + 3 = ؟",
-options:["5","6","7","8"],
-answer:"6"
-},
+    questions = data.questions;
 
-{
-question:"4 + 4 = ؟",
-options:["7","8","9","10"],
-answer:"8"
-},
+    timeLeft = data.time * 60;
 
-{
-question:"5 + 5 = ؟",
-options:["8","9","10","11"],
-answer:"10"
+    renderQuestions();
+
+    startTimer();
 }
 
-];
+function renderQuestions(){
+
+    const container =
+    document.getElementById("questions");
+
+    container.innerHTML = "";
+
+    questions.forEach((q,index)=>{
+
+        let html = `
+        <div class="question">
+        <h3>${index+1}) ${q.question}</h3>
+        `;
+
+        q.options.forEach(option=>{
+
+            html += `
+            <label>
+            <input
+            type="radio"
+            name="q${index}"
+            value="${option}">
+            ${option}
+            </label>
+            `;
+
+        });
+
+        html += `</div>`;
+
+        container.innerHTML += html;
+
+    });
+
+}
 
 const container =
 document.getElementById("questions");
@@ -301,6 +319,8 @@ document.getElementById("result")
 
 }
 
+      window.onload = loadExam;
+      
 </script>
 
 </body>

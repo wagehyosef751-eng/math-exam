@@ -176,6 +176,35 @@ function renderQuestions(){
 
 }
 
+      function startTimer(){
+
+    let countdown = setInterval(()=>{
+
+        let min = Math.floor(timeLeft / 60);
+        let sec = timeLeft % 60;
+
+        if(sec < 10){
+            sec = "0" + sec;
+        }
+
+        document.getElementById("timer").innerHTML =
+        "الوقت المتبقي: " + min + ":" + sec;
+
+        if(timeLeft <= 0){
+
+            clearInterval(countdown);
+
+            submitExam();
+
+        }
+
+        timeLeft--;
+
+    },1000);
+
+}
+
+
 const container =
 document.getElementById("questions");
 

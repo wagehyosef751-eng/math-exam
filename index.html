@@ -6,138 +6,147 @@
 <title>امتحان الصف السادس</title>
 
 <style>
-
 body{
-font-family:Cairo,Tahoma,sans-serif;
-background:linear-gradient(135deg,#1e3c72,#2a5298);
-margin:0;
-padding:20px;
+    font-family:Cairo,Tahoma,sans-serif;
+    background:linear-gradient(135deg,#1e3c72,#2a5298);
+    margin:0;
+    padding:20px;
 }
 
 .container{
-max-width:900px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 0 20px rgba(0,0,0,.2);
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(0,0,0,.2);
 }
 
 h1{
-text-align:center;
-color:#004aad;
+    text-align:center;
+    color:#004aad;
 }
 
 input[type=text]{
-width:100%;
-padding:12px;
-font-size:18px;
-margin:10px 0;
-border:2px solid #ddd;
-border-radius:10px;
+    width:100%;
+    padding:12px;
+    font-size:18px;
+    margin:10px 0;
+    border:2px solid #ddd;
+    border-radius:10px;
+    box-sizing:border-box;
 }
 
 .question{
-background:#f7f9fc;
-padding:15px;
-margin:15px 0;
-border-radius:12px;
-border-right:5px solid #004aad;
+    background:#f7f9fc;
+    padding:15px;
+    margin:15px 0;
+    border-radius:12px;
+    border-right:5px solid #004aad;
 }
 
 label{
-display:block;
-margin:10px 0;
-padding:8px;
-cursor:pointer;
+    display:block;
+    margin:10px 0;
+    padding:8px;
+    cursor:pointer;
 }
 
 label:hover{
-background:#eef4ff;
+    background:#eef4ff;
 }
 
 button{
-width:100%;
-padding:15px;
-font-size:20px;
-background:#004aad;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
+    width:100%;
+    padding:15px;
+    font-size:20px;
+    background:#004aad;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
 }
 
 button:hover{
-background:#00327a;
+    background:#00327a;
 }
 
 #timer{
-font-size:24px;
-text-align:center;
-font-weight:bold;
-background:#fff3cd;
-padding:12px;
-border-radius:10px;
-margin-bottom:20px;
+    font-size:24px;
+    text-align:center;
+    font-weight:bold;
+    background:#fff3cd;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:20px;
 }
 
 #result{
-display:none;
-margin-top:20px;
-padding:20px;
-background:#d4edda;
-border-radius:12px;
-font-size:22px;
-text-align:center;
+    display:none;
+    margin-top:20px;
+    padding:20px;
+    background:#d4edda;
+    border-radius:12px;
+    font-size:20px;
 }
-
 </style>
-</head>
 
+</head>
 <body>
 
 <div class="container">
 
-<h1>امتحان الصف السادس</h1>
+    <h1>امتحان الصف السادس</h1>
 
-<div id="timer">
-الوقت المتبقي: 30:00
-</div>
+    <div id="timer">
+        الوقت المتبقي: 30:00
+    </div>
 
-<input
-type="text"
-id="studentName"
-placeholder="اكتب اسم الطالب">
+    <input
+        type="text"
+        id="studentName"
+        placeholder="اكتب اسم الطالب">
 
-<div id="questions"></div>
+    <div id="questions"></div>
 
-<button onclick="submitExam()">
-إرسال الامتحان
-</button>
+    <button onclick="submitExam()">
+        إرسال الامتحان
+    </button>
 
-<div id="result"></div>
+    <div id="result"></div>
 
 </div>
 
 <script>
 
-const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRJry6lpQybzl8e1KYv4Jf_aOVyxW4AwBHNKJI-_98k0AxWZdGwKRpsu-_05YFNg0YcA/exec";
-      
+const APP_SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbwRJry6lpQybzl8e1KYv4Jf_aOVyxW4AwBHNKJI-_98k0AxWZdGwKRpsu-_05YFNg0YcA/exec";
+
 let questions = [];
 let timeLeft = 0;
 
 async function loadExam(){
 
-    const response = await fetch(APP_SCRIPT_URL);
-    const data = await response.json();
+    try{
 
-    questions = data.questions;
+        const response = await fetch(APP_SCRIPT_URL);
+        const data = await response.json();
 
-    timeLeft = data.time * 60;
+        questions = data.questions;
+        timeLeft = data.time * 60;
 
-    renderQuestions();
+        renderQuestions();
+        startTimer();
 
-    startTimer();
+    }catch(error){
+
+        console.error(error);
+
+        document.getElementById("questions").innerHTML =
+        "<h3>تعذر تحميل الأسئلة</h3>";
+
+    }
+
 }
 
 function renderQuestions(){
@@ -151,18 +160,18 @@ function renderQuestions(){
 
         let html = `
         <div class="question">
-        <h3>${index+1}) ${q.question}</h3>
+            <h3>${index + 1}) ${q.question}</h3>
         `;
 
         q.options.forEach(option=>{
 
             html += `
             <label>
-            <input
-            type="radio"
-            name="q${index}"
-            value="${option}">
-            ${option}
+                <input
+                    type="radio"
+                    name="q${index}"
+                    value="${option}">
+                ${option}
             </label>
             `;
 
@@ -176,7 +185,7 @@ function renderQuestions(){
 
 }
 
-      function startTimer(){
+function startTimer(){
 
     let countdown = setInterval(()=>{
 
@@ -190,10 +199,14 @@ function renderQuestions(){
         document.getElementById("timer").innerHTML =
         "الوقت المتبقي: " + min + ":" + sec;
 
+        if(timeLeft <= 300){
+            document.getElementById("timer").style.background =
+            "#ffd6d6";
+        }
+
         if(timeLeft <= 0){
 
             clearInterval(countdown);
-
             submitExam();
 
         }
@@ -204,198 +217,103 @@ function renderQuestions(){
 
 }
 
-
-const container =
-document.getElementById("questions");
-
-questions.forEach((q,index)=>{
-
-let html = `
-<div class="question">
-<h3>${index+1}) ${q.question}</h3>
-`;
-
-q.options.forEach(option=>{
-
-html += `
-<label>
-<input
-type="radio"
-name="q${index}"
-value="${option}">
-${option}
-</label>
-`;
-
-});
-
-html += `</div>`;
-
-container.innerHTML += html;
-
-});
-
-let countdown = setInterval(()=>{
-
-let min =
-Math.floor(timeLeft/60);
-
-let sec =
-timeLeft%60;
-
-if(sec<10){
-sec="0"+sec;
-}
-
-document.getElementById("result")
-.innerHTML=
-
-`
-✅ تم إرسال الامتحان بنجاح
-
-<br><br>
-
-// اسم الطالب:
-// <b>${student}</b>
-
-<br><br>
-
-الدرجة:
-<b>${score}</b>
-
-من
-<b>${questions.length}</b>
-
-<hr>
-
-${review}
-`;
-      
-if(timeLeft<=300){
-
-document.getElementById("timer")
-.style.background="#ffd6d6";
-
-}
-
-if(timeLeft<=0){
-
-clearInterval(countdown);
-
-submitExam();
-
-}
-
-timeLeft--;
-
-},1000);
-
 function submitExam(){
 
-let student =
-document.getElementById("studentName")
-.value;
+    let student =
+    document.getElementById("studentName").value.trim();
 
-if(student==""){
+    if(student === ""){
 
-alert("اكتب اسم الطالب");
-
-return;
-}
-
-let score = 0;
-let review = "";
-
-questions.forEach((q,index)=>{
-
-let selected =
-document.querySelector(
-`input[name="q${index}"]:checked`
-);
-
-if(selected){
-
-    if(selected.value == q.answer){
-
-        score++;
-
-        review += `
-        <p style="color:green">
-        ✅ ${q.question}
-        <br>
-        إجابتك صحيحة
-        </p>
-        `;
-
-    }else{
-
-        review += `
-        <p style="color:red">
-        ❌ ${q.question}
-        <br>
-        إجابتك: ${selected.value}
-        <br>
-        الإجابة الصحيحة: ${q.answer}
-        </p>
-        `;
+        alert("اكتب اسم الطالب");
+        return;
 
     }
+
+    let score = 0;
+    let review = "";
+
+    questions.forEach((q,index)=>{
+
+        let selected = document.querySelector(
+            `input[name="q${index}"]:checked`
+        );
+
+        if(selected){
+
+            if(selected.value === q.answer){
+
+                score++;
+
+                review += `
+                <p style="color:green">
+                    ✅ ${q.question}
+                    <br>
+                    إجابتك صحيحة
+                </p>
+                `;
+
+            }else{
+
+                review += `
+                <p style="color:red">
+                    ❌ ${q.question}
+                    <br>
+                    إجابتك: ${selected.value}
+                    <br>
+                    الإجابة الصحيحة: ${q.answer}
+                </p>
+                `;
+
+            }
+
+        }
+
+    });
+
+    fetch(APP_SCRIPT_URL,{
+
+        method:"POST",
+        mode:"no-cors",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+            name:student,
+            score:score,
+            total:questions.length
+        })
+
+    });
+
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("result").innerHTML = `
+        ✅ تم إرسال الامتحان بنجاح
+        <br><br>
+
+        اسم الطالب:
+        <b>${student}</b>
+
+        <br><br>
+
+        الدرجة:
+        <b>${score}</b>
+
+        من
+
+        <b>${questions.length}</b>
+
+        <hr>
+
+        ${review}
+    `;
+
 }
 
-});
+window.onload = loadExam;
 
-fetch(APP_SCRIPT_URL,{
-
-method:"POST",
-mode:"no-cors",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-
-name:student,
-
-score:score,
-
-total:questions.length
-
-})
-
-});
-
-document.getElementById("result")
-.style.display="block";
-
-document.getElementById("result")
-.innerHTML=
-
-`
-✅ تم إرسال الامتحان بنجاح
-
-<br><br>
-
-اسم الطالب:
-<b>${student}</b>
-
-<br><br>
-
-الدرجة:
-<b>${score}</b>
-
-من
-<b>${questions.length}</b>
-
-<hr>
-
-${review}
-`;
-      
-}
-
-      window.onload = loadExam;
-      
 </script>
 
 </body>
